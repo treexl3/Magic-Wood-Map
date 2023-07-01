@@ -8721,7 +8721,7 @@
         if (menuLinks.length > 0) {
             const currentUrl = decodeURIComponent(window.location.href);
             menuLinks.forEach((menuLink => {
-                if (menuLink.classList.contains("_active")) menuLink.classList.remove("_active");
+                if ("/" !== currentUrl && menuLink.classList.contains("_active")) menuLink.classList.remove("_active");
                 if (menuLink.classList.contains("menu-list_right__link")) return;
                 if (menuLink.href == currentUrl) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
             }));
