@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20230702131659">
+	<link rel="stylesheet" href="css/style.min.css?_v=20230702141409">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -324,10 +324,10 @@
 					<h4 class="callback__subtitle text">Залиште контакти і ми передвзонимо вам найближчим часом
 					</h4>
 					<div class="callback__form form-main">
-						<form data-dev action="#" class="form-main__form form">
-							<input autocomplete="off" type="text" data-validate data-required placeholder="Ім’я*" class="form__input-name input input_black">
+						<form data-ajax action="files/sendmail/sendmail.php" method="POST" class="form-main__form form">
+							<input autocomplete="off" id="name" name="name" type="text" data-validate data-required placeholder="Ім’я*" class="form__input-name input input_black">
 							<input data-required="tel" autocomplete="off" type="tel" data-validate placeholder="Номер телфону*" class="form__input-phone input input_black">
-							<input data-required="email" autocomplete="off" type="email" data-validate data-error="Fill in the missing gaps" placeholder="Електронна адреса*" class="form__input-email input input_black">
+							<input data-required="email" autocomplete="off" id="email" name="email" type="email" data-validate data-error="Fill in the missing gaps" placeholder="Електронна адреса*" class="form__input-email input input_black">
 							<textarea class="form__textarea textarea" placeholder="Повідомлення"></textarea>
 							<div class="form__submit-button">
 								<button type="submit" class="form__button btn btn_colored btn_capitalize btn_form">Надіслати</button>
@@ -444,7 +444,7 @@
 			</div>
 		</footer>
 	</div>
-	<script src="js/app.min.js?_v=20230702131659"></script>
+	<script src="js/app.min.js?_v=20230702141409"></script>
 </body>
 
 </html>
