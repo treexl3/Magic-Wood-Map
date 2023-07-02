@@ -9055,6 +9055,11 @@
         const menuLinks = document.querySelectorAll(".menu__link, .item-control__image-box");
         if (menuLinks.length > 0) {
             const currentUrl = window.location.href;
+            const currentPathname = window.location.pathname;
+            if ("/Magic-Wood-Map/" == currentPathname) {
+                const homeLink = document.querySelector(".home-link");
+                if (!homeLink.classList.contains("_active")) homeLink.classList.add("_active");
+            }
             menuLinks.forEach((menuLink => {
                 if (menuLink.classList.contains("menu-list_right__link")) return;
                 if (currentUrl == menuLink.href) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
