@@ -8723,8 +8723,10 @@
             menuLinks.forEach((menuLink => {
                 if (menuLink.classList.contains("_active")) menuLink.classList.remove("_active");
                 if (menuLink.classList.contains("menu-list_right__link")) return;
-                console.log(currentUrl, menuLink.pathname);
-                if (currentUrl.startsWith(`/Magic-Wood-Map/${menuLink.pathname}`)) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
+                if (currentUrl == `/Magic-Wood-Map/${menuLink.pathname}`) {
+                    console.log(currentUrl, menuLink.pathname);
+                    menuLink.classList.add("_active");
+                } else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
             }));
         }
         const values = document.querySelectorAll(".value");
