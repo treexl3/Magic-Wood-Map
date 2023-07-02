@@ -8719,12 +8719,11 @@
         }
         const menuLinks = document.querySelectorAll(".menu__link, .item-control__image-box");
         if (menuLinks.length > 0) {
-            const currentUrl = decodeURIComponent(window.location.href);
-            console.log(currentUrl);
+            const currentUrl = decodeURIComponent(window.location.pathname);
             menuLinks.forEach((menuLink => {
                 if (menuLink.classList.contains("_active")) menuLink.classList.remove("_active");
                 if (menuLink.classList.contains("menu-list_right__link")) return;
-                if (currentUrl.startsWith(menuLink.href)) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
+                if (currentUrl.startsWith(`/Magic-Wood-Map/${menuLink.href}`)) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
             }));
         }
         const values = document.querySelectorAll(".value");
