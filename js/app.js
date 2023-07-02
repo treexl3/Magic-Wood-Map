@@ -3522,6 +3522,252 @@
                 }
             }
         }
+        class Popup {
+            constructor(options) {
+                let config = {
+                    logging: true,
+                    init: true,
+                    attributeOpenButton: "data-popup",
+                    attributeCloseButton: "data-close",
+                    fixElementSelector: "[data-lp]",
+                    youtubeAttribute: "data-popup-youtube",
+                    youtubePlaceAttribute: "data-popup-youtube-place",
+                    setAutoplayYoutube: true,
+                    classes: {
+                        popup: "popup",
+                        popupContent: "popup__content",
+                        popupActive: "popup_show",
+                        bodyActive: "popup-show"
+                    },
+                    focusCatch: true,
+                    closeEsc: true,
+                    bodyLock: true,
+                    hashSettings: {
+                        location: true,
+                        goHash: true
+                    },
+                    on: {
+                        beforeOpen: function() {},
+                        afterOpen: function() {},
+                        beforeClose: function() {},
+                        afterClose: function() {}
+                    }
+                };
+                this.youTubeCode;
+                this.isOpen = false;
+                this.targetOpen = {
+                    selector: false,
+                    element: false
+                };
+                this.previousOpen = {
+                    selector: false,
+                    element: false
+                };
+                this.lastClosed = {
+                    selector: false,
+                    element: false
+                };
+                this._dataValue = false;
+                this.hash = false;
+                this._reopen = false;
+                this._selectorOpen = false;
+                this.lastFocusEl = false;
+                this._focusEl = [ "a[href]", 'input:not([disabled]):not([type="hidden"]):not([aria-hidden])', "button:not([disabled]):not([aria-hidden])", "select:not([disabled]):not([aria-hidden])", "textarea:not([disabled]):not([aria-hidden])", "area[href]", "iframe", "object", "embed", "[contenteditable]", '[tabindex]:not([tabindex^="-"])' ];
+                this.options = {
+                    ...config,
+                    ...options,
+                    classes: {
+                        ...config.classes,
+                        ...options?.classes
+                    },
+                    hashSettings: {
+                        ...config.hashSettings,
+                        ...options?.hashSettings
+                    },
+                    on: {
+                        ...config.on,
+                        ...options?.on
+                    }
+                };
+                this.bodyLock = false;
+                this.options.init ? this.initPopups() : null;
+            }
+            initPopups() {
+                this.popupLogging(`Прокинувся`);
+                this.eventsPopup();
+            }
+            eventsPopup() {
+                document.addEventListener("click", function(e) {
+                    const buttonOpen = e.target.closest(`[${this.options.attributeOpenButton}]`);
+                    if (buttonOpen) {
+                        e.preventDefault();
+                        this._dataValue = buttonOpen.getAttribute(this.options.attributeOpenButton) ? buttonOpen.getAttribute(this.options.attributeOpenButton) : "error";
+                        this.youTubeCode = buttonOpen.getAttribute(this.options.youtubeAttribute) ? buttonOpen.getAttribute(this.options.youtubeAttribute) : null;
+                        if ("error" !== this._dataValue) {
+                            if (!this.isOpen) this.lastFocusEl = buttonOpen;
+                            this.targetOpen.selector = `${this._dataValue}`;
+                            this._selectorOpen = true;
+                            this.open();
+                            return;
+                        } else this.popupLogging(`Йой, не заповнено атрибут у ${buttonOpen.classList}`);
+                        return;
+                    }
+                    const buttonClose = e.target.closest(`[${this.options.attributeCloseButton}]`);
+                    if (buttonClose || !e.target.closest(`.${this.options.classes.popupContent}`) && this.isOpen) {
+                        e.preventDefault();
+                        this.close();
+                        return;
+                    }
+                }.bind(this));
+                document.addEventListener("keydown", function(e) {
+                    if (this.options.closeEsc && 27 == e.which && "Escape" === e.code && this.isOpen) {
+                        e.preventDefault();
+                        this.close();
+                        return;
+                    }
+                    if (this.options.focusCatch && 9 == e.which && this.isOpen) {
+                        this._focusCatch(e);
+                        return;
+                    }
+                }.bind(this));
+                if (this.options.hashSettings.goHash) {
+                    window.addEventListener("hashchange", function() {
+                        if (window.location.hash) this._openToHash(); else this.close(this.targetOpen.selector);
+                    }.bind(this));
+                    window.addEventListener("load", function() {
+                        if (window.location.hash) this._openToHash();
+                    }.bind(this));
+                }
+            }
+            open(selectorValue) {
+                if (bodyLockStatus) {
+                    this.bodyLock = document.documentElement.classList.contains("lock") && !this.isOpen ? true : false;
+                    if (selectorValue && "string" === typeof selectorValue && "" !== selectorValue.trim()) {
+                        this.targetOpen.selector = selectorValue;
+                        this._selectorOpen = true;
+                    }
+                    if (this.isOpen) {
+                        this._reopen = true;
+                        this.close();
+                    }
+                    if (!this._selectorOpen) this.targetOpen.selector = this.lastClosed.selector;
+                    if (!this._reopen) this.previousActiveElement = document.activeElement;
+                    this.targetOpen.element = document.querySelector(this.targetOpen.selector);
+                    if (this.targetOpen.element) {
+                        if (this.youTubeCode) {
+                            const codeVideo = this.youTubeCode;
+                            const urlVideo = `https://www.youtube.com/embed/${codeVideo}?rel=0&showinfo=0&autoplay=1`;
+                            const iframe = document.createElement("iframe");
+                            iframe.setAttribute("allowfullscreen", "");
+                            const autoplay = this.options.setAutoplayYoutube ? "autoplay;" : "";
+                            iframe.setAttribute("allow", `${autoplay}; encrypted-media`);
+                            iframe.setAttribute("src", urlVideo);
+                            if (!this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`)) {
+                                this.targetOpen.element.querySelector(".popup__text").setAttribute(`${this.options.youtubePlaceAttribute}`, "");
+                            }
+                            this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`).appendChild(iframe);
+                        }
+                        if (this.options.hashSettings.location) {
+                            this._getHash();
+                            this._setHash();
+                        }
+                        this.options.on.beforeOpen(this);
+                        document.dispatchEvent(new CustomEvent("beforePopupOpen", {
+                            detail: {
+                                popup: this
+                            }
+                        }));
+                        this.targetOpen.element.classList.add(this.options.classes.popupActive);
+                        document.documentElement.classList.add(this.options.classes.bodyActive);
+                        if (!this._reopen) !this.bodyLock ? bodyLock() : null; else this._reopen = false;
+                        this.targetOpen.element.setAttribute("aria-hidden", "false");
+                        this.previousOpen.selector = this.targetOpen.selector;
+                        this.previousOpen.element = this.targetOpen.element;
+                        this._selectorOpen = false;
+                        this.isOpen = true;
+                        setTimeout((() => {
+                            this._focusTrap();
+                        }), 50);
+                        this.options.on.afterOpen(this);
+                        document.dispatchEvent(new CustomEvent("afterPopupOpen", {
+                            detail: {
+                                popup: this
+                            }
+                        }));
+                        this.popupLogging(`Відкрив попап`);
+                    } else this.popupLogging(`Йой, такого попапу немає. Перевірте коректність введення. `);
+                }
+            }
+            close(selectorValue) {
+                if (selectorValue && "string" === typeof selectorValue && "" !== selectorValue.trim()) this.previousOpen.selector = selectorValue;
+                if (!this.isOpen || !bodyLockStatus) return;
+                this.options.on.beforeClose(this);
+                document.dispatchEvent(new CustomEvent("beforePopupClose", {
+                    detail: {
+                        popup: this
+                    }
+                }));
+                if (this.youTubeCode) if (this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`)) this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`).innerHTML = "";
+                this.previousOpen.element.classList.remove(this.options.classes.popupActive);
+                this.previousOpen.element.setAttribute("aria-hidden", "true");
+                if (!this._reopen) {
+                    document.documentElement.classList.remove(this.options.classes.bodyActive);
+                    !this.bodyLock ? bodyUnlock() : null;
+                    this.isOpen = false;
+                }
+                this._removeHash();
+                if (this._selectorOpen) {
+                    this.lastClosed.selector = this.previousOpen.selector;
+                    this.lastClosed.element = this.previousOpen.element;
+                }
+                this.options.on.afterClose(this);
+                document.dispatchEvent(new CustomEvent("afterPopupClose", {
+                    detail: {
+                        popup: this
+                    }
+                }));
+                setTimeout((() => {
+                    this._focusTrap();
+                }), 50);
+                this.popupLogging(`Закрив попап`);
+            }
+            _getHash() {
+                if (this.options.hashSettings.location) this.hash = this.targetOpen.selector.includes("#") ? this.targetOpen.selector : this.targetOpen.selector.replace(".", "#");
+            }
+            _openToHash() {
+                let classInHash = document.querySelector(`.${window.location.hash.replace("#", "")}`) ? `.${window.location.hash.replace("#", "")}` : document.querySelector(`${window.location.hash}`) ? `${window.location.hash}` : null;
+                const buttons = document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash}"]`) ? document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash}"]`) : document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash.replace(".", "#")}"]`);
+                this.youTubeCode = buttons.getAttribute(this.options.youtubeAttribute) ? buttons.getAttribute(this.options.youtubeAttribute) : null;
+                if (buttons && classInHash) this.open(classInHash);
+            }
+            _setHash() {
+                history.pushState("", "", this.hash);
+            }
+            _removeHash() {
+                history.pushState("", "", window.location.href.split("#")[0]);
+            }
+            _focusCatch(e) {
+                const focusable = this.targetOpen.element.querySelectorAll(this._focusEl);
+                const focusArray = Array.prototype.slice.call(focusable);
+                const focusedIndex = focusArray.indexOf(document.activeElement);
+                if (e.shiftKey && 0 === focusedIndex) {
+                    focusArray[focusArray.length - 1].focus();
+                    e.preventDefault();
+                }
+                if (!e.shiftKey && focusedIndex === focusArray.length - 1) {
+                    focusArray[0].focus();
+                    e.preventDefault();
+                }
+            }
+            _focusTrap() {
+                const focusable = this.previousOpen.element.querySelectorAll(this._focusEl);
+                if (!this.isOpen && this.lastFocusEl) this.lastFocusEl.focus(); else focusable[0].focus();
+            }
+            popupLogging(message) {
+                this.options.logging ? FLS(`[Попапос]: ${message}`) : null;
+            }
+        }
+        flsModules.popup = new Popup({});
         class MousePRLX {
             constructor(props, data = null) {
                 let defaultConfig = {
@@ -3614,6 +3860,76 @@
                 }
                 FLS(`[gotoBlock]: Юхуу...їдемо до ${targetBlock}`);
             } else FLS(`[gotoBlock]: Йой... Такого блоку немає на сторінці: ${targetBlock}`);
+        };
+        const store = {
+            _origin: "https://api.emailjs.com"
+        };
+        const init = (publicKey, origin = "https://api.emailjs.com") => {
+            store._userID = publicKey;
+            store._origin = origin;
+        };
+        const validateParams = (publicKey, serviceID, templateID) => {
+            if (!publicKey) throw "The public key is required. Visit https://dashboard.emailjs.com/admin/account";
+            if (!serviceID) throw "The service ID is required. Visit https://dashboard.emailjs.com/admin";
+            if (!templateID) throw "The template ID is required. Visit https://dashboard.emailjs.com/admin/templates";
+            return true;
+        };
+        class EmailJSResponseStatus {
+            constructor(httpResponse) {
+                this.status = httpResponse ? httpResponse.status : 0;
+                this.text = httpResponse ? httpResponse.responseText : "Network Error";
+            }
+        }
+        const sendPost = (url, data, headers = {}) => new Promise(((resolve, reject) => {
+            const xhr = new XMLHttpRequest;
+            xhr.addEventListener("load", (({target}) => {
+                const responseStatus = new EmailJSResponseStatus(target);
+                if (200 === responseStatus.status || "OK" === responseStatus.text) resolve(responseStatus); else reject(responseStatus);
+            }));
+            xhr.addEventListener("error", (({target}) => {
+                reject(new EmailJSResponseStatus(target));
+            }));
+            xhr.open("POST", store._origin + url, true);
+            Object.keys(headers).forEach((key => {
+                xhr.setRequestHeader(key, headers[key]);
+            }));
+            xhr.send(data);
+        }));
+        const send = (serviceID, templateID, templatePrams, publicKey) => {
+            const uID = publicKey || store._userID;
+            validateParams(uID, serviceID, templateID);
+            const params = {
+                lib_version: "3.11.0",
+                user_id: uID,
+                service_id: serviceID,
+                template_id: templateID,
+                template_params: templatePrams
+            };
+            return sendPost("/api/v1.0/email/send", JSON.stringify(params), {
+                "Content-type": "application/json"
+            });
+        };
+        const findHTMLForm = form => {
+            let currentForm;
+            if ("string" === typeof form) currentForm = document.querySelector(form); else currentForm = form;
+            if (!currentForm || "FORM" !== currentForm.nodeName) throw "The 3rd parameter is expected to be the HTML form element or the style selector of form";
+            return currentForm;
+        };
+        const sendForm = (serviceID, templateID, form, publicKey) => {
+            const uID = publicKey || store._userID;
+            const currentForm = findHTMLForm(form);
+            validateParams(uID, serviceID, templateID);
+            const formData = new FormData(currentForm);
+            formData.append("lib_version", "3.11.0");
+            formData.append("service_id", serviceID);
+            formData.append("template_id", templateID);
+            formData.append("user_id", uID);
+            return sendPost("/api/v1.0/email/send-form", formData);
+        };
+        const es = {
+            init,
+            send,
+            sendForm
         };
         function formFieldsInit(options = {
             viewPass: false,
@@ -3770,21 +4086,35 @@
                     const ajax = form.hasAttribute("data-ajax");
                     if (ajax) {
                         e.preventDefault();
-                        const formAction = form.getAttribute("action") ? form.getAttribute("action").trim() : "#";
-                        const formMethod = form.getAttribute("method") ? form.getAttribute("method").trim() : "GET";
-                        const formData = new FormData(form);
+                        form.getAttribute("action") && form.getAttribute("action").trim();
+                        form.getAttribute("method") && form.getAttribute("method").trim();
+                        new FormData(form);
+                        const formName = form.querySelector("#name");
+                        const formTel = form.querySelector("#tel");
+                        const formEmail = form.querySelector("#email");
+                        const formMessage = form.querySelector("#message");
+                        console.log(formTel);
                         form.classList.add("_sending");
-                        const response = await fetch(formAction, {
-                            method: formMethod,
-                            body: formData
-                        });
-                        if (response.ok) {
-                            let responseResult = await response.json();
+                        try {
+                            await es.send("service_3xk13vw", "template_11f495o", {
+                                from_name: formName.value,
+                                to_name: "Denys",
+                                from_email: formEmail.value,
+                                to_email: "denikquadro@gmail.com",
+                                message: formMessage.value,
+                                phone_number: formTel.value
+                            }, "FJi-A_-ygpzoNxqG8").then((() => {
+                                form.classList.remove("_sending");
+                                formSent(form);
+                            })).catch((err => {
+                                console.log(err);
+                                form.classList.remove("_sending");
+                                formSent(form, true);
+                            }));
+                        } catch (err) {
+                            console.log(err);
                             form.classList.remove("_sending");
-                            formSent(form, responseResult);
-                        } else {
-                            alert("Помилка");
-                            form.classList.remove("_sending");
+                            formSent(form, true);
                         }
                     } else if (form.hasAttribute("data-dev")) {
                         e.preventDefault();
@@ -3798,18 +4128,23 @@
                     }
                 }
             }
-            function formSent(form, responseResult = ``) {
+            function formSent(form, formError) {
                 document.dispatchEvent(new CustomEvent("formSent", {
                     detail: {
                         form
                     }
                 }));
-                setTimeout((() => {
+                if (formError) setTimeout((() => {
+                    if (flsModules.popup) {
+                        const popup = form.dataset.popupMessageError;
+                        popup ? flsModules.popup.open(popup) : null;
+                    }
+                }), 200); else setTimeout((() => {
                     if (flsModules.popup) {
                         const popup = form.dataset.popupMessage;
                         popup ? flsModules.popup.open(popup) : null;
                     }
-                }), 0);
+                }), 200);
                 formValidate.formClean(form);
                 formLogging(`Форму відправлено!`);
             }
@@ -8723,7 +9058,6 @@
             menuLinks.forEach((menuLink => {
                 if (menuLink.classList.contains("_active")) menuLink.classList.remove("_active");
                 if (menuLink.classList.contains("menu-list_right__link")) return;
-                console.log(currentUrl, menuLink.href);
                 if (currentUrl == menuLink.href) menuLink.classList.add("_active"); else if (window.location.pathname.includes("/product") || window.location.pathname.includes("/catalog-items")) document.querySelectorAll(".menu__link_catalog").forEach((linkCatalog => linkCatalog.classList.add("_active"))); else if ("/block-page" === window.location.pathname) document.querySelectorAll(".menu__link_blog").forEach((linkCatalog => linkCatalog.classList.add("_active")));
             }));
         }

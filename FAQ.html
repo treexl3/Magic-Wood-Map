@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-	<title>HomePage</title>
+	<title>FAQ</title>
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20230702141409">
+	<link rel="stylesheet" href="css/style.min.css?_v=20230702203029">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -61,16 +61,16 @@
 							<a href="/Magic-Wood-Map" class="search-main__image-link"><img src="img/logo.svg" alt=""></a>
 							<a href="/Magic-Wood-Map" class="search-main__title">Magic Wood Maps</a>
 						</div>
-						<div class="search-main__search">
+						<form action="#" class="search-main__search">
 							<div class="search-main__input">
-								<input autocomplete="off" type="text" data-error="Помилка" placeholder="Знайти..." class="input">
-								<div class="search-main__image">
+								<input autocomplete="off" type="text" name="form[]" data-error="Помилка" placeholder="Знайти..." class="input">
+								<button type="submit" class="search-main__image">
 									<svg class="seach-main__loop" width="18" height="18">
 										<use xlink:href=img/icons/icons.svg#search>
 									</svg>
-								</div>
+								</button>
 							</div>
-						</div>
+						</form>
 					</div>
 					<div class="main-header__control control-main">
 						<div data-da=".menu__item-control, 768, 5" class="control-main__item item-control item-control_hidden">
@@ -239,10 +239,10 @@
 					<h1 class="title-block__title title title_smaller">FAQ</h1>
 					<ul class="title-block__breadcrumb breadcrumb">
 						<li>
-							<a href="home.html" class="breadcrumb__link">Головна /</a>
+							<a href="home" class="breadcrumb__link">Головна /</a>
 						</li>
 						<li>
-							<a href="FAQ.html" class="breadcrumb__link breadcrumb__link_current">FAQ</a>
+							<a href="FAQ" class="breadcrumb__link breadcrumb__link_current">FAQ</a>
 						</li>
 					</ul>
 				</div>
@@ -341,19 +341,20 @@
 			<!--! Callback -->
 			<section class="page__callback callback">
 				<div class="callback__container">
-					<h3 class="callback__title title">Не знайшли відповідь на своє питання?</h3>
-					<h4 class="callback__subtitle text">
-						Напишіть нам, що вас цікавить і ми обов'язково відповімо
-						на ваше запитання!
+					<h3 class="callback__title title">Зворотній дзвінок</h3>
+					<h4 class="callback__subtitle text">Залиште контакти і ми передзвонимо вам найближчим часом
 					</h4>
 					<div class="callback__form form-main">
-						<form data-dev action="#" class="form-main__form form">
-							<input autocomplete="off" type="text" data-validate data-required placeholder="Ім’я*" class="form__input-name input input_black">
-							<input data-required="tel" autocomplete="off" type="tel" data-validate placeholder="Номер телфону*" class="form__input-phone input input_black">
-							<input data-required="email" autocomplete="off" type="email" data-validate data-error="Fill in the missing gaps" placeholder="Електронна адреса*" class="form__input-email input input_black">
-							<textarea class="form__textarea textarea" placeholder="Ваше питання"></textarea>
+						<form data-ajax data-popup-message="#popup-success-email" data-popup-message-error="#popup-error-email" class="form-main__form form">
+							<input autocomplete="off" id="name" name="name" type="text" data-validate data-required placeholder="Ім’я*" class="form__input-name input input_black">
+							<input data-required="tel" autocomplete="off" id="tel" type="tel" data-validate placeholder="Номер телефону*" class="form__input-phone input input_black">
+							<input data-required="email" autocomplete="off" id="email" name="email" type="email" data-validate data-error="Fill in the missing gaps" placeholder="Електронна адреса*" class="form__input-email input input_black">
+							<textarea id="message" class="form__textarea textarea" placeholder="Повідомлення"></textarea>
 							<div class="form__submit-button">
-								<button type="submit" class="form__button btn btn_colored btn_capitalize btn_form">Надіслати</button>
+								<button type="submit" class="form__button btn btn_colored btn_capitalize btn_form">
+									<span>Надіслати</span>
+									<div class="custom-loader"></div>
+								</button>
 							</div>
 						</form>
 					</div>
@@ -361,6 +362,77 @@
 			</section>
 
 		</main>
+		<div id="popup-success-email" aria-hidden="true" class="popup">
+			<div class="popup__wrapper">
+				<div class="popup__content">
+					<button data-close type="button" class="popup__close">x</button>
+					<div class="popup__top">
+						<div class="popup__image">
+							<svg viewBox="0 0 512 512" width="100" title="check-circle">
+								<path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z" />
+							</svg>
+						</div>
+						<h2>Дякую!</h2>
+						<ul class="bg-bubbles">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+					<div class="popup__bottom">
+						<div class="popup__text">
+							Ми отримали вашу заявку і ми передвзвонимо вам найближчим часом.
+						</div>
+						<button data-close class="button"><span>Добре!</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="popup-error-email" aria-hidden="true" class="popup popup-error">
+			<div class="popup__wrapper">
+				<div class="popup__content">
+					<button data-close type="button" class="popup__close">x</button>
+					<div class="popup__top popup__top-error">
+						<div class="popup__image">
+							<svg width="125" height="125" viewBox="0 0 256 256">
+								<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+									<path d="M 45 90 C 20.187 90 0 69.813 0 45 C 0 20.187 20.187 0 45 0 c 24.813 0 45 20.187 45 45 C 90 69.813 69.813 90 45 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(236,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+									<path d="M 28.902 66.098 c -1.28 0 -2.559 -0.488 -3.536 -1.465 c -1.953 -1.952 -1.953 -5.118 0 -7.07 l 32.196 -32.196 c 1.951 -1.952 5.119 -1.952 7.07 0 c 1.953 1.953 1.953 5.119 0 7.071 L 32.438 64.633 C 31.461 65.609 30.182 66.098 28.902 66.098 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+									<path d="M 61.098 66.098 c -1.279 0 -2.56 -0.488 -3.535 -1.465 L 25.367 32.438 c -1.953 -1.953 -1.953 -5.119 0 -7.071 c 1.953 -1.952 5.118 -1.952 7.071 0 l 32.195 32.196 c 1.953 1.952 1.953 5.118 0 7.07 C 63.657 65.609 62.377 66.098 61.098 66.098 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+								</g>
+							</svg>
+						</div>
+						<h2>Помилка!</h2>
+						<ul class="bg-bubbles">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+					<div class="popup__bottom">
+						<div class="popup__text">
+							Спробуйте надіслати вашу заявку пізніше або ж спробуйте ще раз.
+						</div>
+						<button data-close class="button"><span>Спробувати знову</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<footer class="footer">
 			<div class="footer__container">
 				<div class="footer__content">
@@ -397,16 +469,16 @@
 							<nav class="item-footer-menu__body spollers-footer__item">
 								<ul class="item-footer-menu__list spollers-footer__body">
 									<li class="item-footer-menu__item">
-										<a href="index.html" class="item-footer-menu__link item-footer-menu-link">Головна</a>
+										<a href="/" class="item-footer-menu__link item-footer-menu-link">Головна</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="about-us.html" class="item-footer-menu__link item-footer-menu-link">Про нас</a>
+										<a href="about-us" class="item-footer-menu__link item-footer-menu-link">Про нас</a>
 									</li>
 									<li class="item-footer-menu__item">
 										<a href="#" class="item-footer-menu__link item-footer-menu-link">Контакти</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="blog.html" class="item-footer-menu__link item-footer-menu-link">Блог</a>
+										<a href="blog" class="item-footer-menu__link item-footer-menu-link">Блог</a>
 									</li>
 								</ul>
 							</nav>
@@ -448,16 +520,16 @@
 							<nav class="item-footer-menu__body spollers-footer__item">
 								<ul class="item-footer-menu__list spollers-footer__body">
 									<li class="item-footer-menu__item">
-										<a href="" class="item-footer-menu__link item-footer-menu-link">Оферта</a>
+										<a href="#" class="item-footer-menu__link item-footer-menu-link">Оферта</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="delivery-payment.html" class="item-footer-menu__link item-footer-menu-link">Доставка</a>
+										<a href="delivery-payment" class="item-footer-menu__link item-footer-menu-link">Доставка</a>
 									</li>
 									<li class="item-footer-menu__item">
 										<a href="#" class="item-footer-menu__link item-footer-menu-link">Контакти</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="FAQ.html" class="item-footer-menu__link item-footer-menu-link">FAQ</a>
+										<a href="FAQ" class="item-footer-menu__link item-footer-menu-link">FAQ</a>
 									</li>
 								</ul>
 							</nav>
@@ -467,7 +539,7 @@
 			</div>
 		</footer>
 	</div>
-	<script src="js/app.min.js?_v=20230702141409"></script>
+	<script src="js/app.min.js?_v=20230702203029"></script>
 </body>
 
 </html>

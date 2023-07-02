@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20230702141409">
+	<link rel="stylesheet" href="css/style.min.css?_v=20230702203029">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -61,16 +61,16 @@
 							<a href="/Magic-Wood-Map" class="search-main__image-link"><img src="img/logo.svg" alt=""></a>
 							<a href="/Magic-Wood-Map" class="search-main__title">Magic Wood Maps</a>
 						</div>
-						<div class="search-main__search">
+						<form action="#" class="search-main__search">
 							<div class="search-main__input">
-								<input autocomplete="off" type="text" data-error="Помилка" placeholder="Знайти..." class="input">
-								<div class="search-main__image">
+								<input autocomplete="off" type="text" name="form[]" data-error="Помилка" placeholder="Знайти..." class="input">
+								<button type="submit" class="search-main__image">
 									<svg class="seach-main__loop" width="18" height="18">
 										<use xlink:href=img/icons/icons.svg#search>
 									</svg>
-								</div>
+								</button>
 							</div>
-						</div>
+						</form>
 					</div>
 					<div class="main-header__control control-main">
 						<div data-da=".menu__item-control, 768, 5" class="control-main__item item-control item-control_hidden">
@@ -837,7 +837,6 @@
 					</div>
 				</div>
 			</section>
-
 		</main>
 		<footer class="footer">
 			<div class="footer__container">
@@ -875,16 +874,16 @@
 							<nav class="item-footer-menu__body spollers-footer__item">
 								<ul class="item-footer-menu__list spollers-footer__body">
 									<li class="item-footer-menu__item">
-										<a href="index.html" class="item-footer-menu__link item-footer-menu-link">Головна</a>
+										<a href="/" class="item-footer-menu__link item-footer-menu-link">Головна</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="about-us.html" class="item-footer-menu__link item-footer-menu-link">Про нас</a>
+										<a href="about-us" class="item-footer-menu__link item-footer-menu-link">Про нас</a>
 									</li>
 									<li class="item-footer-menu__item">
 										<a href="#" class="item-footer-menu__link item-footer-menu-link">Контакти</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="blog.html" class="item-footer-menu__link item-footer-menu-link">Блог</a>
+										<a href="blog" class="item-footer-menu__link item-footer-menu-link">Блог</a>
 									</li>
 								</ul>
 							</nav>
@@ -926,16 +925,16 @@
 							<nav class="item-footer-menu__body spollers-footer__item">
 								<ul class="item-footer-menu__list spollers-footer__body">
 									<li class="item-footer-menu__item">
-										<a href="" class="item-footer-menu__link item-footer-menu-link">Оферта</a>
+										<a href="#" class="item-footer-menu__link item-footer-menu-link">Оферта</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="delivery-payment.html" class="item-footer-menu__link item-footer-menu-link">Доставка</a>
+										<a href="delivery-payment" class="item-footer-menu__link item-footer-menu-link">Доставка</a>
 									</li>
 									<li class="item-footer-menu__item">
 										<a href="#" class="item-footer-menu__link item-footer-menu-link">Контакти</a>
 									</li>
 									<li class="item-footer-menu__item">
-										<a href="FAQ.html" class="item-footer-menu__link item-footer-menu-link">FAQ</a>
+										<a href="FAQ" class="item-footer-menu__link item-footer-menu-link">FAQ</a>
 									</li>
 								</ul>
 							</nav>
@@ -945,7 +944,7 @@
 			</div>
 		</footer>
 	</div>
-	<script src="js/app.min.js?_v=20230702141409"></script>
+	<script src="js/app.min.js?_v=20230702203029"></script>
 </body>
 
 </html>
