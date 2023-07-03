@@ -1999,7 +1999,7 @@ body::after {
 }
 
 .burger-menu__text {
-  margin-bottom: -30px;
+  margin-bottom: 15px;
   display: block;
   font-weight: 500;
   color: #000000;
